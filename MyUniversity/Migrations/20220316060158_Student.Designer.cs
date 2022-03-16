@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyUniversity.Data;
 
 namespace MyUniversity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220316060158_Student")]
+    partial class Student
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,25 +231,6 @@ namespace MyUniversity.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("MyUniversity.Models.Student", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EnrollmentID")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("ParentName")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Students");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("MyUniversity.Models.MyIdentityRole", null)
@@ -297,17 +280,6 @@ namespace MyUniversity.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MyUniversity.Models.Student", b =>
-                {
-                    b.HasOne("MyUniversity.Models.MyIdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

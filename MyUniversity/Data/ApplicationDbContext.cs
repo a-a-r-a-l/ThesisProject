@@ -7,11 +7,15 @@ using System.Text;
 
 namespace MyUniversity.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<MyIdentityUser, MyIdentityRole, Guid>
+    public class ApplicationDbContext 
+        : IdentityDbContext<MyIdentityUser, MyIdentityRole, Guid>
     {
+        public DbSet<Student> Students { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+        
     }
 }
