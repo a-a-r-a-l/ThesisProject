@@ -14,7 +14,7 @@ namespace MyUniversity.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<MyIdentityUser> _userManager;
         private readonly SignInManager<MyIdentityUser> _signInManager;
-
+       // private readonly ApplicationDBContext
         public IndexModel(
             UserManager<MyIdentityUser> userManager,
             SignInManager<MyIdentityUser> signInManager)
@@ -36,6 +36,7 @@ namespace MyUniversity.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
         }
 
         private async Task LoadAsync(MyIdentityUser user)

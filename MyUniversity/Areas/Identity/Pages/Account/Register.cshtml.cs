@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MyUniversity.Models.Enums;
 
 namespace MyUniversity.Areas.Identity.Pages.Account
 {
@@ -75,6 +76,10 @@ namespace MyUniversity.Areas.Identity.Pages.Account
             [Display(Name = "Is Admin User?")]
             [Required]
             public bool IsAdminUser { get; set; }
+
+            [Required(ErrorMessage = "Please mention your Gender.")]
+            [Display(Name = "Gender")]
+            public MyIdentityGenders Gender { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -95,7 +100,8 @@ namespace MyUniversity.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     DisplayName = Input.DisplayName,
                     DateOfBirth = Input.DateOfBirth,
-                    IsAdminUser = Input.IsAdminUser
+                    IsAdminUser = Input.IsAdminUser,
+                    Gender=Input.Gender
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

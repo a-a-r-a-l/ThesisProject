@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MyUniversity.Models.Enums;
 
 namespace MyUniversity.Models
 {
@@ -26,6 +27,11 @@ namespace MyUniversity.Models
         [Display(Name = "Is Admin User?")]
         [Required]
         public bool IsAdminUser { get; set; }
+
+        [Required]
+        [Display(Name = "Gender")]
+        [PersonalData]
+        public MyIdentityGenders Gender { get; set; }
 
     }
 }
