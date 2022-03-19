@@ -10,8 +10,8 @@ using MyUniversity.Data;
 namespace MyUniversity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220316060158_Student")]
-    partial class Student
+    [Migration("20220319195418_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,6 +120,21 @@ namespace MyUniversity.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Faculty", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FacultyType")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Faculty");
                 });
 
             modelBuilder.Entity("MyUniversity.Models.MyIdentityRole", b =>
@@ -231,6 +246,133 @@ namespace MyUniversity.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MyUniversity.Models.Student", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EnrollmentID")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<string>("ParentName")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Subject", b =>
+                {
+                    b.Property<short>("SubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("SubjectName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("SubjectId");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.SubmissionDetail", b =>
+                {
+                    b.Property<int>("SubmissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileContentType")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("Remarks")
+                        .HasMaxLength(3)
+                        .HasColumnType("int")
+                        .HasColumnName("remark");
+
+                    b.Property<DateTime>("ReviewOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReviewedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmissionDesc")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasColumnName("varchar");
+
+                    b.Property<DateTime>("SubmissionDueOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubmissionFile")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("SubmissionOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("SubmissionStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<short>("ThesisId")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("SubmissionId");
+
+                    b.HasIndex("ThesisId");
+
+                    b.ToTable("SubmissionDetails");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Thesis", b =>
+                {
+                    b.Property<short>("ThesisId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CompletionPercent")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<short>("SubjectId")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("ThesisDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThesisName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ThesisId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Theses");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("MyUniversity.Models.MyIdentityRole", null)
@@ -280,6 +422,63 @@ namespace MyUniversity.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Faculty", b =>
+                {
+                    b.HasOne("MyUniversity.Models.MyIdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Student", b =>
+                {
+                    b.HasOne("MyUniversity.Models.MyIdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.SubmissionDetail", b =>
+                {
+                    b.HasOne("MyUniversity.Models.Thesis", "Thesis")
+                        .WithMany("SubmissionDetails")
+                        .HasForeignKey("ThesisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Thesis");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Thesis", b =>
+                {
+                    b.HasOne("MyUniversity.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyUniversity.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.Thesis", b =>
+                {
+                    b.Navigation("SubmissionDetails");
                 });
 #pragma warning restore 612, 618
         }

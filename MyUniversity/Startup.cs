@@ -100,6 +100,18 @@ namespace MyUniversity
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+
+
+
+                // Register the Route for Areas
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                // Register the Default Route
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
         }
     }
