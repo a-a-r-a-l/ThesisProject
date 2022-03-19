@@ -10,7 +10,7 @@ using MyUniversity.Data;
 namespace MyUniversity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220315151902_initial")]
+    [Migration("20220319152454_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,6 +181,9 @@ namespace MyUniversity.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAdminUser")
                         .HasColumnType("bit");

@@ -180,6 +180,9 @@ namespace MyUniversity.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAdminUser")
                         .HasColumnType("bit");
 
