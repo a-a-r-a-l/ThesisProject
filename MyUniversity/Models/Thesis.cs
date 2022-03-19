@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyUniversity.Models
 {
-    [Table("Thesis")]
+    [Table("Theses")]
     public class Thesis
     {
         [Display(Name = "Thesis ID")]
@@ -33,7 +33,7 @@ namespace MyUniversity.Models
         [Display(Name = "Student ID")]
         [Required]
         [ForeignKey(nameof(Thesis.Student))]      // foreign key 
-        public int StudentId { get; set; }
+        public Guid StudentId { get; set; }
 
 
         [Display(Name = "Start Date")]

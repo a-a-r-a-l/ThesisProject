@@ -22,7 +22,7 @@ namespace MyUniversity.Models
         [Required(ErrorMessage = "{0} cannot be empty.")]
         [StringLength(10, ErrorMessage = "{0} should contain {1} characters.")]
         [MinLength(10, ErrorMessage = "{0} should contain {1} characters.")]
-        public string EnrollmentID { get; set; }
+        public int EnrollmentID { get; set; }
 
 
         [Display(Name = "Name of the Parent / Guardian")]

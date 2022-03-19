@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MyUniversity.Models.Thesis>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ThesisName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThesisDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompletionPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThesisName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThesisDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject.SubjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompletionPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.UserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ThesisId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ThesisId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ThesisId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

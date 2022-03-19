@@ -19,7 +19,7 @@ namespace MyUniversity.Models
         [Display(Name = "Enter Thesis Id")]
         [ForeignKey(nameof(SubmissionDetail.Thesis))]
 
-        public int ThesisId { get; set; }
+        public short ThesisId { get; set; }
 
 
         [Display(Name = "Enter Description")]
