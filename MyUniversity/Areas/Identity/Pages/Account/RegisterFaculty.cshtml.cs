@@ -16,19 +16,22 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MyUniversity.Models.Enum;
 
-namespace MyUniversity.Areas.Identity.Pages.Account
+namespace GuniKitchen.Web.Areas.Identity.Pages.Account
 {
-    public class RegisterModel : PageModel
+    [Authorize(Roles = "Administrator")]
+    public class RegisterManagerModel : PageModel
     {
+        private const string StandardPASSWORD = "Password!123";
+
         private readonly SignInManager<MyIdentityUser> _signInManager;
         private readonly UserManager<MyIdentityUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<RegisterManagerModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
+        public RegisterManagerModel(
             UserManager<MyIdentityUser> userManager,
             SignInManager<MyIdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<RegisterManagerModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -51,16 +54,7 @@ namespace MyUniversity.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            #region Additional Properties as defined in MyIdentityUser Model
 
             [Display(Name = "Display Name")]
             [Required(ErrorMessage = "{0} cannot be empty.")]
@@ -72,13 +66,13 @@ namespace MyUniversity.Areas.Identity.Pages.Account
             [Required]
             public DateTime DateOfBirth { get; set; }
 
-            [Required(ErrorMessage = "Please mention your Gender.")]
+            // NOTE: Assign ID for each of the radio buttons,
+            //       as browser needs unique "id", to avoid browser warnings
+            [Required(ErrorMessage = "Please indicate which of these best describes your Gender.")]
             [Display(Name = "Gender")]
             public MyIdentityGenders Gender { get; set; }
 
-            [Display(Name = "Is Admin User?")]
-            [Required]
-            public bool IsAdminUser { get; set; }=false;
+            #endregion
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -89,7 +83,8 @@ namespace MyUniversity.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Manage/Users");
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -99,16 +94,18 @@ namespace MyUniversity.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     DisplayName = Input.DisplayName,
                     DateOfBirth = Input.DateOfBirth,
-                    IsAdminUser=false,
-                    Gender=Input.Gender
+                    IsAdminUser = true,
+                    Gender = Input.Gender
                 };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, StandardPASSWORD);
                 if (result.Succeeded)
                 {
+                    // Assign the user to the "Manager" Identity Role
                     await _userManager.AddToRolesAsync(user, new string[] {
-                        MyIdentityRoleNames.Student.ToString()
+                        MyIdentityRoleNames.Faculty.ToString()
                     });
-                    _logger.LogInformation("User created a Student account with password.");
+
+                    _logger.LogInformation("User created a new Facukty account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -127,7 +124,7 @@ namespace MyUniversity.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        // await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

@@ -17,9 +17,18 @@
     @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Administrator.ToString()))
         {
             <li>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Faculties" asp-action="Index">Faculties</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Faculties</a>
             </li>
         }
+   @* @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Student.ToString()))
+        {
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="SubmissionDetails" asp-action="Index">SubmissionDetails</a>
+            </li>
+             <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Theses" asp-action="Index">Theses</a>
+            </li>
+        }*@
     @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Administrator.ToString())
              || await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Faculty.ToString()))
         {

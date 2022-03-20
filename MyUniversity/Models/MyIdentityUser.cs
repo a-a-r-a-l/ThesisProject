@@ -31,7 +31,7 @@ namespace MyUniversity.Models
 
         [Display(Name = "Is Admin User?")]
         [Required]
-        public bool IsAdminUser { get; set; }
+        public bool IsAdminUser { get; set; } = false;
 
 
 
