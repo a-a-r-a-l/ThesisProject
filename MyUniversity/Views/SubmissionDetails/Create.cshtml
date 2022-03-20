@@ -32,8 +32,14 @@
                 <span asp-validation-for="SubmissionOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SubmissionFile" class="control-label"></label>
-                <input asp-for="SubmissionFile" class="form-control" />
+                <label asp-for="SubmissionFile" style="width: 100%;"></label>
+                <img id="filePic" src="" />
+                <input type="file" asp-for="SubmissionFile"
+                       accept=".pdf, .docx"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;" 
+                       onchange="document.getElementById('filePic').src = window.URL.createObjectURL(this.files[0])" />
+                       
                 <span asp-validation-for="SubmissionFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,11 +62,11 @@
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="SubmissionStatus" /> @Html.DisplayNameFor(model => model.SubmissionStatus)
                 </label>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
