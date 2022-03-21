@@ -13,7 +13,7 @@ namespace MyUniversity.Models
         ///     Mapped to the ID column of the Identity User
         /// </summary>
         [Display(Name = "User ID")]
-        [Key]
+        
         [ForeignKey(nameof(Student.User))]
         public Guid UserId { get; set; }
 
@@ -22,7 +22,8 @@ namespace MyUniversity.Models
         [Required(ErrorMessage = "{0} cannot be empty.")]
         [StringLength(10, ErrorMessage = "{0} should contain {1} characters.")]
         [MinLength(10, ErrorMessage = "{0} should contain {1} characters.")]
-        public int EnrollmentID { get; set; }
+        [Key]
+        public string EnrollmentID { get; set; }
 
 
         [Display(Name = "Name of the Parent / Guardian")]

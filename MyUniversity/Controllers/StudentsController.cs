@@ -63,7 +63,7 @@ namespace MyUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                student.UserId = Guid.NewGuid();
+                //student.UserId = Guid.NewGuid();
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -33,7 +33,7 @@ namespace MyUniversity.Models
         [Display(Name = "Student ID")]
         [Required]
         [ForeignKey(nameof(Thesis.Student))]      // foreign key 
-        public Guid StudentId { get; set; }
+        public  string EnrollmentId { get; set; }
 
 
         [Display(Name = "Start Date")]

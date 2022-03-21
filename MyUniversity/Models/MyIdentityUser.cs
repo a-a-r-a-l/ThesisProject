@@ -34,6 +34,6 @@ namespace MyUniversity.Models
         public bool IsAdminUser { get; set; } = false;
 
 
-
+        public Student Student { get; set; }
     }
 }

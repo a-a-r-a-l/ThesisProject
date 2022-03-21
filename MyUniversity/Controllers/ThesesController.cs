@@ -51,7 +51,7 @@ namespace MyUniversity.Controllers
         // GET: Theses/Create
         public IActionResult Create()
         {
-            ViewData["StudentId"] = new SelectList(_context.Students, "UserId", "UserId");
+            ViewData["EnrollmentId"] = new SelectList(_context.Students, "UserId", "UserId");
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName");
             return View();
         }
@@ -61,7 +61,7 @@ namespace MyUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ThesisId,ThesisName,ThesisDescription,SubjectId,StudentId,StartDate,EndDate,CompletionPercent")] Thesis thesis)
+        public async Task<IActionResult> Create([Bind("ThesisId,ThesisName,ThesisDescription,SubjectId,EnrollmentId,StartDate,EndDate,CompletionPercent")] Thesis thesis)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace MyUniversity.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.StudentId);
+            ViewData["EnrollmentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.EnrollmentId);
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName", thesis.SubjectId);
             return View(thesis);
         }
@@ -87,7 +87,7 @@ namespace MyUniversity.Controllers
             {
                 return NotFound();
             }
-            ViewData["StudentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.StudentId);
+            ViewData["EnrollmentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.EnrollmentId);
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName", thesis.SubjectId);
             return View(thesis);
         }
@@ -97,7 +97,7 @@ namespace MyUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("ThesisId,ThesisName,ThesisDescription,SubjectId,StudentId,StartDate,EndDate,CompletionPercent")] Thesis thesis)
+        public async Task<IActionResult> Edit(short id, [Bind("ThesisId,ThesisName,ThesisDescription,SubjectId,EnrollmentId,StartDate,EndDate,CompletionPercent")] Thesis thesis)
         {
             if (id != thesis.ThesisId)
             {
@@ -124,8 +124,8 @@ namespace MyUniversity.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.StudentId);
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName", thesis.SubjectId);
+            ViewData["EnrollmentId"] = new SelectList(_context.Students, "UserId", "UserId", thesis.EnrollmentId);
+            ViewData["EnrollmentId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName", thesis.SubjectId);
             return View(thesis);
         }
 

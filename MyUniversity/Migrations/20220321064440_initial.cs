@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyUniversity.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -192,13 +192,13 @@ namespace MyUniversity.Migrations
                 name: "Students",
                 columns: table => new
                 {
+                    EnrollmentID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EnrollmentID = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     ParentName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.UserId);
+                    table.PrimaryKey("PK_Students", x => x.EnrollmentID);
                     table.ForeignKey(
                         name: "FK_Students_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -216,7 +216,7 @@ namespace MyUniversity.Migrations
                     ThesisName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThesisDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubjectId = table.Column<short>(type: "smallint", nullable: false),
-                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EnrollmentId = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompletionPercent = table.Column<int>(type: "int", nullable: false)
@@ -225,10 +225,10 @@ namespace MyUniversity.Migrations
                 {
                     table.PrimaryKey("PK_Theses", x => x.ThesisId);
                     table.ForeignKey(
-                        name: "FK_Theses_Students_StudentId",
-                        column: x => x.StudentId,
+                        name: "FK_Theses_Students_EnrollmentId",
+                        column: x => x.EnrollmentId,
                         principalTable: "Students",
-                        principalColumn: "UserId",
+                        principalColumn: "EnrollmentID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Theses_Subjects_SubjectId",
@@ -305,14 +305,20 @@ namespace MyUniversity.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubmissionDetails_ThesisId",
                 table: "SubmissionDetails",
                 column: "ThesisId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Theses_StudentId",
+                name: "IX_Theses_EnrollmentId",
                 table: "Theses",
-                column: "StudentId");
+                column: "EnrollmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Theses_SubjectId",

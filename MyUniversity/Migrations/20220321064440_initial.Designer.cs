@@ -10,8 +10,8 @@ using MyUniversity.Data;
 namespace MyUniversity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220320165323_Initial1")]
-    partial class Initial1
+    [Migration("20220321064440_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -251,18 +251,21 @@ namespace MyUniversity.Migrations
 
             modelBuilder.Entity("MyUniversity.Models.Student", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EnrollmentID")
+                    b.Property<string>("EnrollmentID")
                         .HasMaxLength(10)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("ParentName")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.HasKey("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EnrollmentID");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -347,11 +350,12 @@ namespace MyUniversity.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EnrollmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("SubjectId")
                         .HasColumnType("smallint");
@@ -366,7 +370,7 @@ namespace MyUniversity.Migrations
 
                     b.HasKey("ThesisId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("EnrollmentId");
 
                     b.HasIndex("SubjectId");
 
@@ -438,8 +442,8 @@ namespace MyUniversity.Migrations
             modelBuilder.Entity("MyUniversity.Models.Student", b =>
                 {
                     b.HasOne("MyUniversity.Models.MyIdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Student")
+                        .HasForeignKey("MyUniversity.Models.Student", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -461,7 +465,7 @@ namespace MyUniversity.Migrations
                 {
                     b.HasOne("MyUniversity.Models.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("EnrollmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -474,6 +478,11 @@ namespace MyUniversity.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("MyUniversity.Models.MyIdentityUser", b =>
+                {
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("MyUniversity.Models.Thesis", b =>
